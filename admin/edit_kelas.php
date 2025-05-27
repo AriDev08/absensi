@@ -1,0 +1,82 @@
+<?php
+require '../koneksi.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die("ID kelas tidak valid.");
+}
+
+$id = $_GET['id'];
+
+$query = "SELECT * FROM kelas WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    die("Kelas tidak ditemukan.");
+}
+
+$kelas = $result->fetch_assoc();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $nama_kelas = trim($_POST["nama_kelas"]);
+    $singkatan  = trim($_POST["singkatan"]);
+    $angkatan   = trim($_POST["angkatan"]);
+
+    $query = "UPDATE kelas SET nama_kelas = ?, singkatan = ?, angkatan = ? WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("sssi", $nama_kelas, $singkatan, $angkatan, $id);
+
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Data kelas berhasil diperbarui!";
+        echo "<script>window.location.href='admin.php?page=tampil_kelas';</script>";
+        exit();
+    } else {
+        $error = "Terjadi kesalahan: " . $stmt->error;
+    }
+}
+?>
+
+
+
+
+<div class="shadow-lg rounded-lg bg-white p-3 w-[83%] h-auto ml-64 mt-16">
+    <h2 class="text-center text-xl font-bold mb-4 bg-gray-800 text-white p-3 rounded-md">Edit Kelas</h2>
+
+    <?php if (isset($error)) : ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: '<?= $error ?>'
+            });
+        </script>
+    <?php endif; ?>
+
+    <form action="" method="POST" class="space-y-4">
+        <div>
+            <label class="block font-medium">Nama Kelas:</label>
+            <input type="text" name="nama_kelas" value="<?= htmlspecialchars($kelas['nama_kelas']) ?>" class="w-full p-2 border rounded-md" required>
+        </div>
+
+        <div>
+            <label class="block font-medium">Singkatan:</label>
+            <input type="text" name="singkatan" value="<?= htmlspecialchars($kelas['singkatan']) ?>" class="w-full p-2 border rounded-md" required>
+        </div>
+
+        <div>
+            <label class="block font-medium">Angkatan:</label>
+            <input type="text" name="angkatan" value="<?= htmlspecialchars($kelas['angkatan']) ?>" class="w-full p-2 border rounded-md" required>
+        </div>
+
+        <div class="flex justify-between">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Update</button>
+        </div>
+    </form>
+</div>

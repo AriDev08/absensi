@@ -1,0 +1,38 @@
+
+<h2 style="text-align: center;">Rekap Absensi Tanggal 2025-05-03</h2>
+
+<table border="1" cellpadding="8" cellspacing="0" style="margin-bottom: 20px;">
+    <tr style="background-color: #DFF0D8;">
+        <th>Hadir</th>
+        <th>Izin</th>
+        <th>Sakit</th>
+        <th>Alpha</th>
+    </tr>
+    <tr>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">1</td>
+        <td align="center">0</td>
+    </tr>
+</table>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead style="background-color: #f2f2f2;">
+        <tr>
+            <th>NIS</th>
+            <th>Nama</th>
+            <th>Kelas</th>
+            <th>Status Masuk</th>
+            <th>Status Pulang</th>
+        </tr>
+    </thead>
+    <tbody>
+                                    <tr>
+                    <td>65576</td>
+                    <td>swckhdlavf</td>
+                    <td>X RPL 2</td>
+                    <td>sakit</td>
+                    <td>Sakit</td>
+                </tr>
+                        </tbody>
+</table>
