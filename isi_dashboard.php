@@ -1,22 +1,21 @@
 <?php
 include '../koneksi.php';
 
-// Total siswa
+
 $queryTotalSiswa = "SELECT COUNT(*) AS total FROM siswa";
 $resultTotalSiswa = $conn->query($queryTotalSiswa);
 $totalSiswa = $resultTotalSiswa->fetch_assoc()['total'];
 
-// Total kelas
 $queryTotalKelas = "SELECT COUNT(*) AS total FROM kelas";
 $resultTotalKelas = $conn->query($queryTotalKelas);
 $totalKelas = $resultTotalKelas->fetch_assoc()['total'];
 
-// Total user
+
 $queryTotalUser = "SELECT COUNT(*) AS total FROM users";
 $resultTotalUser = $conn->query($queryTotalUser);
 $totalUser = $resultTotalUser->fetch_assoc()['total'];
 
-// Ambil semua kelas
+
 $queryKelas = "SELECT id, singkatan FROM kelas";
 $resultKelas = $conn->query($queryKelas);
 $kelasBelumAbsensi = [];
@@ -27,7 +26,7 @@ $kelasBelumAbsensi = [];
 while ($kelas = $resultKelas->fetch_assoc()) {
     $idKelas = $kelas['id'];
 
-    // Cek apakah ada siswa di kelas ini yang sudah absen hari ini
+
     $queryCekAbsensi = "
        SELECT COUNT(*) AS total 
 FROM absensi a
@@ -51,7 +50,7 @@ AND a.tanggal = '$tanggalHariIni'
 
 
 
-// Rekap absensi (izin, sakit, alpha)
+
 $bulanIni = date('Y-m');
 $queryRekap = "
     SELECT status, COUNT(*) AS jumlah 
@@ -79,7 +78,7 @@ while ($row = $resultRekap->fetch_assoc()) {
 
 <div class="ml-[226px] pt-20 pl-8">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <!-- Total Siswa -->
+ 
         <a href="admin.php?page=tampil_siswa" class="block">
             <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out border-l-4 border-blue-500 cursor-pointer h-48 flex flex-col justify-between">
                 <h3 class="text-xl font-bold text-gray-800">Total Siswa</h3>
@@ -92,7 +91,7 @@ while ($row = $resultRekap->fetch_assoc()) {
             </div>
         </a>
 
-        <!-- Total User -->
+
         <a href="admin.php?page=tampil_user" class="block">
             <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out border-l-4 border-green-500 cursor-pointer h-48 flex flex-col justify-center">
                 <h3 class="text-xl font-bold text-gray-800">Total User</h3>
@@ -100,7 +99,7 @@ while ($row = $resultRekap->fetch_assoc()) {
             </div>
         </a>
 
-        <!-- Total Kelas -->
+
         <a href="admin.php?page=tampil_kelas" class="block">
             <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out border-l-4 border-yellow-500 cursor-pointer h-48 flex flex-col justify-center">
                 <h3 class="text-xl font-bold text-gray-800">Total Kelas</h3>
@@ -109,7 +108,7 @@ while ($row = $resultRekap->fetch_assoc()) {
         </a>
     </div>
 
-    <!-- Kelas Belum Absensi -->
+
     <div class="mt-10 max-w-md">
         <div class="bg-white shadow-md border-l-4 border-gray-400 h-48 rounded-lg p-6 flex flex-col justify-start">
             <h3 class="text-xl font-bold text-gray-800 mb-2">Kelas Belum Absensi</h3>

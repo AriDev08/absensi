@@ -56,7 +56,7 @@ if ($kelas_id) {
     <p class="mt-2 text-4xl font-semibold text-gray-700">
       <?= $totalSiswaKelas ?> <span class="text-sm font-normal">siswa</span>
     </p>
-    <p class="text-sm text-gray-500">Termasuk kamu 😊</p>
+
   </div>
 
 
@@ -72,7 +72,7 @@ if ($kelas_id) {
         <?php endforeach; ?>
       </ul>
     <?php else: ?>
-      <p class="text-gray-500 text-sm">Tidak ada jadwal hari ini 🎉</p>
+      <p class="text-gray-500 text-sm">Tidak ada jadwal hari ini</p>
     <?php endif; ?>
   </div>
 
