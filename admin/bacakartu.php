@@ -1,7 +1,7 @@
 <?php
 require '../koneksi.php';
 
-// Ambil mode absen
+
 $sql = mysqli_query($conn, "SELECT * FROM tipe LIMIT 1");
 $data = mysqli_fetch_array($sql);
 
@@ -21,8 +21,8 @@ $data_kartu = mysqli_fetch_array($baca_kartu);
 $nokartu = $data_kartu['nokartu'];
 
 $tanggal = date('Y-m-d');
-$hari_ini = date('l'); // Monday, Tuesday, ...
-// Konversi hari Inggris ke Indonesia
+$hari_ini = date('l'); 
+
 $mapHari = [
     'Monday' => 'Senin',
     'Tuesday' => 'Selasa',
@@ -57,35 +57,32 @@ $hari_db = $mapHari[$hari_ini];
             $nama_siswa = $data_siswa['nama'];
             $kelas_id = $data_siswa['kelas_id'];
 
-            // Ambil jadwal masuk paling awal hari ini untuk kelas siswa
+    
             $cek_jadwal = mysqli_query($conn, "SELECT MIN(jam_mulai) as jam_masuk FROM jadwal WHERE kelas_id='$kelas_id' AND hari='$hari_db'");
             $data_jadwal = mysqli_fetch_assoc($cek_jadwal);
             $jam_masuk = $data_jadwal['jam_masuk'];
 
             $waktu_sekarang = date("H:i:s");
 
-            // Cek apakah sudah melewati jam masuk
+           
             if ($waktu_sekarang > $jam_masuk) {
                 echo "<h3 class='text-red-600 text-xl font-bold'>Terlambat!</h3>";
                 echo "<p class='text-gray-600 mt-2'>Batas jam masuk: <strong>$jam_masuk</strong></p>";
                 echo "<p class='text-gray-600'>Silakan isi kartu merah ke guru piket.</p>";
-                // Bersihkan kartu agar tidak terus looping
+       
                 mysqli_query($conn, "UPDATE rfid SET nokartu=''");
                 exit;
             }
 
             $status = 'hadir';
 
-            // Jika mode masuk dan waktu absen antara jam masuk dan jam selesai (misal disesuaikan sendiri)
-            if ($mode_absen == 1) {
-                // Cek juga waktu masuk terlambat (misalnya lewat jam 07:30 dianggap terlambat)
-                // Karena sudah ada cek waktu sekarang > jam_masuk, ini opsional
-                if ($waktu_sekarang > "07:30:00" && $waktu_sekarang <= "10:05:00") {
+                    if ($mode_absen == 1) {
+                       if ($waktu_sekarang > "07:30:00" && $waktu_sekarang <= "10:05:00") {
                     $status = 'terlambat';
                 }
             }
 
-            // Cek apakah siswa sudah absen hari ini dengan tipe absen ini
+ 
             $cek_absen = mysqli_query($conn, "SELECT * FROM absensi WHERE siswa_id='$id_siswa' AND tanggal='$tanggal' AND tipe_id='$mode_absen'");
             if (mysqli_num_rows($cek_absen) == 0) {
 

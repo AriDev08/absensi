@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($role)) {
         $error = 'Silakan pilih role.';
     } elseif ($role === 'siswa') {
-        // Login siswa dari tabel siswa
+     
         $nis  = trim($_POST['nis'] ?? '');
         $nama = trim($_POST['nama'] ?? '');
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $res = $stmt->get_result();
 
             if ($res && $res->num_rows === 1) {
-                // Berhasil login siswa
+            
                 $_SESSION['role']     = 'siswa';
                 $_SESSION['user_id']  = $nis;
                 $_SESSION['username'] = $nama;
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif (in_array($role, ['guru', 'admin'])) {
-        // Login guru/admin dari tabel users
+        
         $email    = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
 

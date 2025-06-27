@@ -63,18 +63,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->bind_param("ssssss", $nis, $nama, $kelas_id, $absen, $jurusan_id, $nokartu_post);
 
                 if ($stmt->execute()) {
-                    // Kosongkan kartu
+                
                     $conn->query("UPDATE rfid SET nokartu = ''");
                     
-                    // --- Tambahan: Daftarkan siswa sebagai user ---
-                    // Username: NIS, Password: NIS (sesuai preferensi), Role: siswa
                     $passwordHash = password_hash($nis, PASSWORD_DEFAULT);
                     $insertUser = $conn->prepare("
                     INSERT INTO users (username, no_wa, password, role, jabatan_id)
                     VALUES (?, '', ?, 'siswa', NULL)
                 ");
                 $insertUser->bind_param("ss", $nis, $passwordHash);
-                    // -------------------------------------------------
+               
                     
                     $success = "Data siswa berhasil disimpan, kartu terdaftar, dan akun siswa dibuat.";
                     $nokartu = '';
