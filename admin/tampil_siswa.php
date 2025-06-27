@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Proses Naik Kelas
+
 if (isset($_POST['naik_kelas'])) {
     $tahun_lulus = date("Y");
     $siswa_query = mysqli_query($conn, "SELECT * FROM siswa");
@@ -17,12 +17,11 @@ if (isset($_POST['naik_kelas'])) {
         $jurusan_id = $siswa['jurusan_id'];
         $kelas_id = $siswa['kelas_id'];
 
-        // Ambil detail kelas sekarang
         $kelas_now = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM kelas WHERE id = '$kelas_id'"));
         $angkatan = $kelas_now['angkatan'];
         $singkatan = $kelas_now['singkatan'];
 
-        // Tentukan angkatan selanjutnya
+
         $next_angkatan = match ($angkatan) {
             'X' => 'XI',
             'XI' => 'XII',
@@ -31,12 +30,11 @@ if (isset($_POST['naik_kelas'])) {
         };
 
         if ($next_angkatan === 'LULUS') {
-            // Masukkan ke alumni
+
             $jurusan_nama = mysqli_fetch_assoc(mysqli_query($conn, "SELECT nama_jurusan FROM jurusan WHERE id = '$jurusan_id'"))['nama_jurusan'];
             mysqli_query($conn, "INSERT INTO alumni (nama, nis, jurusan, tahun_lulus) VALUES ('$nama', '$nis', '$jurusan_nama', '$tahun_lulus')");
             mysqli_query($conn, "DELETE FROM siswa WHERE id = '$id_siswa'");
         } else {
-            // Update kelas_id ke kelas dengan singkatan baru
             $singkatan_baru = preg_replace('/^'.$angkatan.'/', $next_angkatan, $singkatan);
             $kelas_baru_query = mysqli_query($conn, "SELECT id FROM kelas WHERE singkatan = '$singkatan_baru'");
 
@@ -50,7 +48,6 @@ if (isset($_POST['naik_kelas'])) {
     echo "<script>alert('Semua siswa berhasil dinaikkan kelas!'); window.location.href = window.location.href;</script>";
 }
 
-// Tampilkan data siswa
 $query = "SELECT 
             siswa.id,
             siswa.nis, 

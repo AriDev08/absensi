@@ -5,7 +5,6 @@ $query = "SELECT * FROM jurusan ORDER BY id ASC";
 $result = $conn->query($query);
 ?>
 
-<!-- ...Query ambil jurusan... -->
 <div class="shadow-lg rounded-lg bg-white p-3 w-[83%] h-auto ml-64 mt-16">
     <h2 class="text-2xl font-bold mb-4 text-center bg-[#001F3F] text-white py-3 rounded">Daftar Jurusan</h2>
 

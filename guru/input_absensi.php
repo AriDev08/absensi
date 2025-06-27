@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_absensi'])) {
     $selected_kelas = $_POST['kelas'] ?? '';
 }
 
-// Ambil daftar siswa sesuai filter kelas
+
 if ($selected_kelas !== '') {
     $sst = $conn->prepare(
         "SELECT s.id,s.nis,s.nama,k.singkatan

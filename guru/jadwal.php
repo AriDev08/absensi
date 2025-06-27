@@ -4,15 +4,13 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include '../koneksi.php';
 
-$user_id = $_SESSION['user_id']; // ID guru yang login
+$user_id = $_SESSION['user_id']; 
 
-// Daftar hari
 $hariList = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 
-// Ambil filter hari dari form POST
 $filter_hari = isset($_POST['hari']) ? $_POST['hari'] : '';
 
-// Query jadwal
+
 $query = "SELECT jadwal.*, mapel.nama_mapel, kelas.nama_kelas
           FROM jadwal 
           INNER JOIN mapel ON jadwal.mapel_id = mapel.id
@@ -57,7 +55,7 @@ $result = $stmt->get_result();
         </div>
     </form>
 
-    <!-- Tabel Jadwal -->
+
     <table class="min-w-full border-collapse border border-gray-200">
         <thead>
             <tr class="bg-gray-200">
