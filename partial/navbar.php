@@ -5,7 +5,7 @@
   <title>Navbar dengan Dropdown</title>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <script>
-    // Opsional: hilangkan flicker saat load
+  
     document.addEventListener('alpine:init', () => {
       Alpine.store('dropdown', {
         open: false
@@ -34,18 +34,16 @@
 </a>
 
 
-    <!-- Profile -->
+
     <div class="ml-auto relative" @click.outside="open = false">
       <div class="flex items-center space-x-2 cursor-pointer" @click="open = !open">
         <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
         <img src="../asset/profile.png" alt="Profile" class="w-8 h-8 rounded-full">
         
-        <!-- Tanda panah -->
         <span x-show="!open" x-cloak>▼</span>
         <span x-show="open" x-cloak>▲</span>
       </div>
 
-      <!-- Dropdown -->
       <div x-show="open" x-transition x-cloak class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
         <a href="../logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
       </div>
