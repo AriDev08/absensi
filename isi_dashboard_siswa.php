@@ -6,7 +6,6 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $user_id = $_SESSION['user_id'];
 
-// Ambil kelas_id user (siswa)
 $queryUser = $conn->prepare("SELECT kelas_id FROM users WHERE id = ? AND role = 'siswa'");
 $queryUser->bind_param("i", $user_id);
 $queryUser->execute();
@@ -18,17 +17,14 @@ $kelas_id = $userData['kelas_id'] ?? null;
 $totalSiswaKelas = 0;
 $jadwalHariIni = [];
 
-// Jika kelas_id valid
 if ($kelas_id) {
-    // Hitung total siswa di kelas ini
     $queryTotalSiswa = $conn->prepare("SELECT COUNT(*) AS total FROM users WHERE kelas_id = ? AND role = 'siswa'");
     $queryTotalSiswa->bind_param("i", $kelas_id);
     $queryTotalSiswa->execute();
     $resultSiswa = $queryTotalSiswa->get_result();
     $totalSiswaKelas = $resultSiswa->fetch_assoc()['total'];
 
-    // Ambil jadwal hari ini berdasarkan kelas
-    $hariIni = date("l"); // Contoh: Monday
+    $hariIni = date("l"); 
     $mapHari = ['Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu', 'Sunday' => 'Minggu'];
     $hariIndonesia = $mapHari[$hariIni] ?? '';
 
@@ -47,10 +43,8 @@ if ($kelas_id) {
 }
 ?>
 
-<!-- Card Tampilan -->
 <div class="ml-[226px] pt-10 pl-8 grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
 
-  <!-- Card Total Siswa -->
   <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-indigo-500 h-48 flex flex-col justify-between">
     <h3 class="text-xl font-bold text-gray-800">Total Teman Sekelas</h3>
     <p class="mt-2 text-4xl font-semibold text-gray-700">

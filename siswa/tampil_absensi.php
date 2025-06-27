@@ -91,7 +91,6 @@ while ($row = $result->fetch_assoc()) {
         <?php endforeach; ?>
     </div>
 
-    <!-- Tombol export Excel -->
     <form method="post" action="export_excel.php" class="mb-4">
         <input type="hidden" name="tanggal" value="<?= htmlspecialchars($selected_tanggal) ?>">
         <?php if ($_SESSION['role'] !== 'siswa'): ?>
@@ -100,7 +99,7 @@ while ($row = $result->fetch_assoc()) {
         <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Export ke Excel</button>
     </form>
 
-    <!-- Tabel data -->
+
     <table class="min-w-full border-collapse border border-gray-300">
         <thead>
             <tr class="bg-gray-200 text-left">
