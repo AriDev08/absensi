@@ -3,14 +3,13 @@ require '../koneksi.php';
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!$conn) die('Koneksi gagal');
 
-// 1. Ambil daftar kelas untuk dropdown
+
 $kelas_list = $conn->query("SELECT * FROM kelas")->fetch_all(MYSQLI_ASSOC);
 
-// 2. Baca filter dari form
+
 $selected_kelas   = $_POST['kelas']   ?? '';
 $selected_tanggal = $_POST['tanggal'] ?? date('Y-m-d');
 
-// 3. Tentukan hari bahasa Indonesia
 $hariMap = [
     'Monday'    => 'Senin',
     'Tuesday'   => 'Selasa',
@@ -23,7 +22,7 @@ $hariMap = [
 $phpDay = date('l', strtotime($selected_tanggal));
 $hari   = $hariMap[$phpDay] ?? '';
 
-// 4. Query jadwal untuk dapatkan jam_mulai_kelas (fallback 07:30)
+
 $jam_mulai_kelas = '07:30:00';
 if ($selected_kelas && $hari) {
     $stmt2 = $conn->prepare("
@@ -35,13 +34,13 @@ if ($selected_kelas && $hari) {
     $stmt2->execute();
     $res2 = $stmt2->get_result()->fetch_assoc();
     if (!empty($res2['jam_mulai'])) {
-        // Pastikan format HH:MM:SS
+  
         $jam_mulai_kelas = date('H:i:s', strtotime($res2['jam_mulai']));
     }
     $stmt2->close();
 }
 
-// 5. Siapkan query rekap absensi
+
 $sql = "
 SELECT
     s.id             AS siswa_id,
@@ -77,7 +76,7 @@ $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// 6. Hitung kartu status & bangun dataList
+
 $cardData = ['hadir'=>0,'terlambat'=>0,'izin'=>0,'sakit'=>0,'alpha'=>0];
 $dataList = [];
 
@@ -85,7 +84,7 @@ while ($row = $result->fetch_assoc()) {
     $status   = strtolower($row['status_masuk'] ?? '');
     $jamMasuk = $row['jam_masuk'];
 
-    // 6a. Lateness check against dynamic jam_mulai_kelas
+
     if ($status === 'hadir'
         && $jamMasuk
         && strtotime($jamMasuk) > strtotime($jam_mulai_kelas)
@@ -97,7 +96,7 @@ while ($row = $result->fetch_assoc()) {
         $cardData[$status]++;
     }
 
-    // 6b. Untuk izin/sakit/alpha, override jam tampil
+  
     if (in_array($status, ['izin','sakit','alpha'])) {
         $row['jam_masuk']    = '-';
         $row['jam_pulang']   = '-';
@@ -110,7 +109,7 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 ?>
 
-<!-- ====== TAMPILAN HTML ====== -->
+
 <div class="shadow-lg rounded-lg bg-white p-6 w-[83%] h-auto ml-64 mt-20">
   <h2 class="text-center text-2xl font-bold mb-2">
     Rekap Absensi - <?= htmlspecialchars($selected_tanggal) ?>
@@ -120,7 +119,6 @@ $stmt->close();
     <?= date('H:i', strtotime($jam_mulai_kelas)) ?>
   </p>
 
-  <!-- Ringkasan kartu -->
   <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
     <?php
     $labels = ['hadir'=>'Hadir','terlambat'=>'Terlambat','izin'=>'Izin','sakit'=>'Sakit','alpha'=>'Alpha'];
@@ -134,7 +132,6 @@ $stmt->close();
     <?php endforeach; ?>
   </div>
 
-  <!-- Filter form -->
   <form method="post" class="mb-6 flex flex-wrap items-end space-x-4">
     <div>
       <label class="block font-medium">Pilih Kelas:</label>
@@ -158,7 +155,6 @@ $stmt->close();
     </button>
   </form>
 
-  <!-- Export Excel -->
   <form method="post" action="export_excel.php" class="mb-4">
     <input type="hidden" name="kelas"   value="<?= htmlspecialchars($selected_kelas) ?>">
     <input type="hidden" name="tanggal" value="<?= htmlspecialchars($selected_tanggal) ?>">
@@ -167,8 +163,6 @@ $stmt->close();
       Export ke Excel
     </button>
   </form>
-
-  <!-- Tabel data -->
   <table class="min-w-full border-collapse border border-gray-300">
     <thead>
       <tr class="bg-gray-200 text-left">
