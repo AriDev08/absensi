@@ -91,14 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <option value="siswa" <?= (isset($_POST['role']) && $_POST['role']==='siswa')?'selected':'' ?>>Siswa</option>
         </select>
       </div>
-       <!-- testern -->
+       <!-- blue -->
 
       <div id="adminFields" class="hidden space-y-3">
         <input type="email" id="email" name="email" placeholder="Email" class="w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-800 focus:outline-none" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" />
         <input type="password" id="password" name="password" placeholder="Password" class="w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-800 focus:outline-none" />
       </div>
       
-
+ <!-- bla -->
       <div id="siswaFields" class="hidden space-y-3">
         <input type="text" id="nis" name="nis" placeholder="NIS" class="w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-800 focus:outline-none" value="<?= htmlspecialchars($_POST['nis'] ?? '') ?>" />
         <input type="text" id="nama" name="nama" placeholder="Nama" class="w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-800 focus:outline-none" value="<?= htmlspecialchars($_POST['nama'] ?? '') ?>" />
